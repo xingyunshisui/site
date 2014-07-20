@@ -18,164 +18,139 @@
       overflow: hidden;
     }
 
+    body {
+    /*  position: relative;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;*/
+      -webkit-perspective: 300px;
+      perspective: 300px;
+      -webkit-transform-style: preserve-3d;
+      transform-style: preserve-3d;
+    }
+
     .page {
+      display: none;
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      background-size: cover;
+      background-position: top center; 
     }
 
     .index {
-      background: url("./bg.png") no-repeat top center;
-      background-size: cover;
+      display: block;
+      background-image: url("./bg.png");
+      /*-webkit-transform: translate3d(0,0,-100px);*/
     }
 
     canvas {
+      z-index: 5;
+      /*display: none;*/
       /*background: url("./1.jpg") no-repeat 0 0;*/
+    }
+
+    #touchme {
+      position:absolute;
+      left: 50%;
+      top: 40%;
+      width: 204px;
+      height: 57px;
+      margin-left: -102px;
+      background: url("./touchme.png") no-repeat 0 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #tryagain {
+      display: none;
+      position:absolute;
+      left: 50%;
+      bottom: 0;
+      width: 222px;
+      height: 156px;
+      margin-left: -111px;
+      background: url("./tryagain.png") no-repeat 0 0;
+    }
+
+    .page2 {
+      font-size: 20px;
+      background-color: black;
+      color: white;
+      text-align: center;
+    }
+
+    .line1 {
+      margin-top: 30%;
+    }
+
+    .line2 {
+      margin-bottom: 60px;
+    }
+
+    .page3 {
+      background-image: url("./3.png");
+      background-size: 176% 100%;
+    }
+
+    .page4 {
+      background-image: url("./4.png");
+      /*background-size: 176% 100%;*/
+    }
+
+    .page5 {
+      background-image: url("./5.png");
+      background-size: 180% 100%;
+    }
+
+    .page6 {
+      background-image: url("./6.png");
+    }
+
+    .page9 {
+      background-image: url("./9.png");
+    }
+
+    .page10 {
+      background-image: url("./10.png");
+    }
+
+    .page12 {
+      background-image: url("./12.png");
+    }
+
+    .page13 {
+      background-image: url("./13.png");
     }
   </style>
 </head>
 <body>
-<div class="pages">
-  <div class="page index"></div>
-</div>
-<script>
-var clientWidth = document.documentElement.clientWidth
-var clientHeight = document.documentElement.clientHeight
-var canvas = document.createElement('canvas')
-document.body.appendChild(canvas)
-var canvasWidth = canvas.width = clientWidth
-var canvasHeight = canvas.height = clientHeight
-var ctx = canvas.getContext('2d')
-globalCompositeOperation = 'source-over' // 解决部分手机白屏问题
-// ctx.fillStyle = 'grey';
-// ctx.fillRect(0, 0, canvas.width, canvas.height);
-var image = new Image();
-image.onload = function() {
-  var ratio = image.height / canvas.height
-  var drawImageWidth = image.width / ratio
-  ctx.drawImage(image, -(drawImageWidth - canvas.width) / 2, 0, drawImageWidth, canvas.height);
-  initPen();
-  // for (var i = 0; i < 10; i++) {
-  // ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
-  //   ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height)
-  // }
-  // ctx.stroke();
-  forceRepaint(canvas);
-}
-image.src = './mask.png';
+<!-- <div id="pages" class="pages"> -->
+  <div class="page page13"></div>
+  <div class="page page12"></div>
+  <div class="page page10"></div>
+  <div class="page page9"></div>
+  <div class="page page6"></div>
+  <div class="page page5"></div>
+  <div class="page page4"></div>
+  <div class="page page3"></div>
+  <div id="page2" class="page page2">
+    <p class="line1">想脱你衣服的人很多，</p>
+    <p class="line2">想执你之手，与你偕老的人有吗？</p>
+    <p>都说“结婚是女人的梦想”</p>
+    <p>如果你爱她</p>
+    <p>此刻，你们最需要的是</p>
+    <p>一场浪漫而伟大的婚前旅行</p>
+  </div>
+  <div id="index" class="page index current"></div>
+  <div id="touchme"></div>
+  <div id="tryagain"></div>
+<!-- </div> -->
+<script src="./wipe.js">
 
-function initPen() {
-  ctx.globalCompositeOperation = 'destination-out'
-  ctx.lineWidth = '30'
-  ctx.lineCap = 'round'
-  ctx.lineJoin = 'round'
-  ctx.beginPath();
-}
-
-document.addEventListener('touchstart', function(e) {
-  var touch = e.changedTouches[0]
-  ctx.moveTo(touch.clientX, touch.clientY);
-}, false);
-
-document.addEventListener('touchmove', function(e) {
-  e.preventDefault();
-  var touch = e.changedTouches[0]
-  ctx.lineTo(touch.clientX, touch.clientY);
-  ctx.stroke();
-  // forceRepaint(canvas);
-}, false);
-
-document.addEventListener('touchend', function(e) {
-  if (checkScrapeFinished()) {
-    endScrape();
-  }
-}, false);
-
-function forceRepaint(elem) {
-  if (!elem.style.opacity) {
-    elem.style.opacity = 0.999;
-  } else {
-    elem.style.opacity = '';
-  }
-
-  elem.style.display='none';
-  elem.offsetHeight;
-  elem.style.display='block';
-}
-
-function checkScrapeFinished() {
-  var pixels = 0
-  var clearedPixels = 0
-
-  var left1 = canvasWidth * 0.156
-  var top1 = left1 * 1.16
-  var width1 = canvasWidth * 0.412
-  var height1 = width1 * 1.234
-
-  var left2 = canvasWidth * 0.696
-  var top2 = left2 * 0.354
-  var width2 = canvasWidth * 0.271
-  var height2 = width2 * 1.747
-
-  calcPixels(left1, top1, width1, height1);
-  calcPixels(left2, top2, width2, height2);
-
-  function calcPixels(left, top, width, height) {
-    var data = ctx.getImageData(left, top, width, height).data;
-
-    for (var i = 0; i < data.length; i += 4) {
-      pixels++;
-      if (data[i + 3] == 0) clearedPixels++;
-    }
-  }
-
-  return clearedPixels / pixels > 0.7
-}
-
-function checkRegion(touch) {
-  // 检查是否在刮的区域内
-  return (touch.clientX > region.left && touch.clientX < region.right &&
-    touch.clientY > region.top && touch.clientY < region.bottom);
-}
-
-function checkElements() {
-  var elements = wrap.querySelectorAll('.active-el'),
-    pixels = 0,
-    clearedPixels = 0,
-    rect, left, top, width, height;
-
-  if (elements.length === 0) {
-    elements = wrap.querySelectorAll('*');
-  }
-
-  for (var j = 0; j < elements.length; j++) {
-    rect = elements[j].getClientRects()[0];
-    if (!rect) continue;
-    left = rect.left - region.left;
-    top = rect.top - region.top;
-    width = rect.right - rect.left;
-    height = rect.bottom - rect.top;
-    data = context.getImageData(left, top, width, height).data;
-
-    for (var i = 0; i < data.length; i += 4) {
-      pixels++;
-      if (data[i + 3] == 0) clearedPixels++;
-    }
-  }
-
-  return clearedPixels / pixels;
-}
-
-function endScrape() {
-  canvas.style.webkitTransition = 'opacity 0.6s ease';
-  canvas.style.opacity = 0;
-  setTimeout(function() {
-    canvas.style.display = 'none';
-    // opt.onfinish && opt.onfinish();
-  }, 600);
-}
 </script>
 </body>
 </html>
