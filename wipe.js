@@ -1,7 +1,7 @@
 var clientWidth = document.documentElement.clientWidth
 var clientHeight = document.documentElement.clientHeight
 var canvas = document.createElement('canvas')
-document.body.appendChild(canvas)
+byId('pages').appendChild(canvas)
 document.body.style.height = clientHeight + 'px'
 var canvasWidth = canvas.width = clientWidth
 var canvasHeight = canvas.height = clientHeight
@@ -23,7 +23,7 @@ image.onload = function() {
 }
 image.src = './mask.png';
 
-var byId = function(id) {
+function byId(id) {
   return document.getElementById(id);
 }
 
