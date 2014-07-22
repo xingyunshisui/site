@@ -21,7 +21,7 @@ image.onload = function() {
   // ctx.stroke();
   forceRepaint(canvas);
 }
-image.src = './mask.png';
+// image.src = './1.png';
 
 function byId(id) {
   return document.getElementById(id);
@@ -29,7 +29,7 @@ function byId(id) {
 
 function initPen() {
   ctx.globalCompositeOperation = 'destination-out'
-  ctx.lineWidth = '30'
+  ctx.lineWidth = '50'
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
   ctx.beginPath();
@@ -144,6 +144,7 @@ function endScrape() {
   tryagain.style.display = 'block';
 }
 
+// TODO: 临时调试改为 true，应该为false
 var scrapeEnd = false;
 var index = byId('index')
 var touchme = byId('touchme')
@@ -165,6 +166,8 @@ byId('tryagain').addEventListener('touchstart', function() {
     setTransitionDuratoin(page2, 0)
     index.style.display = 'none'
     tryagain.style.display = 'none'
+
+    currentPage.querySelector('.page2-text').classList.add('fadein')
   }, 300)
 }, false)
 
@@ -350,6 +353,16 @@ document.addEventListener('touchend', function(e) {
       setTransform(prevPage, 'translate3d(0, ' + -clientHeight + 'px, 0)')
       prevVisiblePage.style.display = 'none';
       animating = false
+
+      switch (currentPage.id) {
+        case 'page2':
+          currentPage.querySelector('.page2-text').classList.add('fadein');
+          break;
+        case 'page3':
+          currentPage.querySelector('.page3-text').classList.add('fadein')
+          currentPage.querySelector('.page3-bg').classList.add('scale')
+          break;
+      }
     }, 300)
   } else {
     setTransform(currentPage, 'translate3d(0, 0, 0) scale(1)')

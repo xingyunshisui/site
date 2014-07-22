@@ -53,10 +53,10 @@
       position: relative;
       top: 0;
       left: 0;
-      -webkit-perspective: 300px;
+      /*-webkit-perspective: 300px;
       perspective: 300px;
       -webkit-transform-style: preserve-3d;
-      transform-style: preserve-3d;
+      transform-style: preserve-3d;*/
     }
 
     .page {
@@ -83,10 +83,11 @@
     }
 
     #touchme {
+      display: none;
       position:absolute;
       left: 50%;
-      top: 40%;
-      width: 204px;
+      top: 42%;
+      width: 203px;
       height: 57px;
       margin-left: -102px;
       background: url("./touchme.png") no-repeat 0 0;
@@ -95,34 +96,34 @@
     }
 
     #tryagain {
-      display: none;
+      /*display: none;*/
       position:absolute;
       left: 50%;
       bottom: 0;
-      width: 222px;
-      height: 156px;
+      width: 221px;
+      height: 225px;
       margin-left: -111px;
-      background: url("./tryagain.png") no-repeat 0 0;
+      background: url("./tryagain.png") no-repeat top center;
     }
 
     .page2 {
-      font-size: 20px;
+      /*font-size: 20px;*/
       background-color: black;
-      color: white;
+      /*color: white;*/
       text-align: center;
     }
 
-    .line1 {
+    /*.line1 {
       margin-top: 30%;
     }
 
     .line2 {
       margin-bottom: 60px;
-    }
+    }*/
 
     .page3 {
-      background-image: url("./3.png");
-      background-size: 176% 100%;
+      overflow: hidden;
+      /*background-size: 120% 120%;*/
     }
 
     .page4 {
@@ -132,7 +133,7 @@
 
     .page5 {
       background-image: url("./5.png");
-      background-size: 180% 100%;
+      /*background-size: 180% 100%;*/
     }
 
     .page6 {
@@ -154,6 +155,70 @@
     .page13 {
       background-image: url("./13.png");
     }
+
+    .page2-text {
+      width: 383px;
+      height: 297px;
+      margin: 0 auto;
+      margin-top: 25%;
+      background: url("./2-text.png") no-repeat 0 0;
+      opacity: 0;
+    }
+
+    @-webkit-keyframes 'scale' {
+      from {
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        /*-webkit-transform: translate3d(0px, 0px, 0px);*/
+      }
+
+      to {
+        width: 110%;
+        height: 110%;
+        left: -64px;
+        /*-webkit-transform: translate3d(0px, 0px, 20px);*/
+      }
+    }
+
+    @-webkit-keyframes 'fadein' {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .scale {
+      -webkit-animation: scale 1.5s ease .1s forwards;
+    }
+
+    .fadein {
+      -webkit-animation: fadein 2.5s ease .1s forwards;
+    }
+
+    .page3-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("./3-bg.png") no-repeat top center;
+      background-size: cover;
+      -webkit-transform: translate3d(0px, 0px, 0px);
+    }
+
+    .page3-text {
+      width: 422px;
+      height: 206px;
+      margin: auto;
+      margin-top: 25%;
+      background: url("./3-text.png") no-repeat 0 0;
+      opacity: 0;
+    }
   </style>
 </head>
 <body>
@@ -165,14 +230,12 @@
   <div class="page page6"></div>
   <div class="page page5"></div>
   <div class="page page4"></div>
-  <div class="page page3"></div>
+  <div id="page3" class="page page3">
+    <div class="page3-bg"></div>
+    <div class="page3-text"></div>
+  </div>
   <div id="page2" class="page page2">
-    <p class="line1">想脱你衣服的人很多，</p>
-    <p class="line2">想执你之手，与你偕老的人有吗？</p>
-    <p>都说“结婚是女人的梦想”</p>
-    <p>如果你爱她</p>
-    <p>此刻，你们最需要的是</p>
-    <p>一场浪漫而伟大的婚前旅行</p>
+    <div class="page2-text"></div>
   </div>
   <div id="index" class="page index current"></div>
   <div id="touchme"></div>
