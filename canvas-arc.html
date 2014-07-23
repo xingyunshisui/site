@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>擦</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="format-detection" content="email=no"/>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+      background: gold;
+    }
+
+    audio {
+      display: none;
+    }
+
+    .progress-wrap {
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+    }
+
+    .note {
+      position: absolute;
+      top: 19px;
+      left: 20px;
+      width: 35px;
+      height: 41px;
+      background: url("./note.png")
+    }
+
+    #progress {
+
+    }
+  </style>
+</head>
+<body>
+<audio id="music" loop="loop" preload="auto">
+  <source title="Time" src="./ts.mp3"></source>
+</audio>
+<div class="progress-wrap">
+  <canvas id="progress" width="80" height="80"></canvas>
+  <span class="note"></span>
+</div>
+<script>
+function ProgressCircle(opts) {
+  var canvas = opts.canvas
+  if (!canvas) {
+    return false
+  }
+
+  canvas = this.canvas = typeof canvas == 'string' ? document.getElementById(canvas) : canvas
+  if (!canvas || !canvas.getContext('2d')) {
+    return false
+  }
+
+  this.context = canvas.getContext('2d')
+  this.width = canvas.width
+  this.height = canvas.height
+  this.bgColor = opts.bgColor || '#b5b6b6'
+  this.color = opts.color || '#fff'
+  this.circleWidth = opts.circleWidth || 0.05
+}
+
+ProgressCircle.prototype = {
+  updateProgress: function(percent) {
+    if (percent > 1) {
+      return false
+    }
+
+    var current = percent * 100
+    var ctx = this.context;
+    var width = this.width;
+    var height = this.height;
+    // var current = options.current;
+    var color = this.color;
+    var bgColor = this.bgColor;
+    // var textColor = options.textColor;
+    var circleWidth = this.circleWidth;
+    // var fontScale = options.fontScale;
+
+    // 进度条宽高，x，y 是中心坐标
+    var x = width / 2;
+    var y = height / 2;
+    var r1 = Math.floor(Math.min(width, height) / 2); // 大圈半径
+    var r2 = Math.floor(r1 * (1 - circleWidth)); // 小圈半径
+    var startAngle = -Math.PI / 2; // 起始角为圆的正上方
+    var endAngle = startAngle + Math.PI * 2 * current / 100; // 一圈是 2 PI，
+    // var fontSize = Math.floor(r1 * fontScale);
+
+    // 保存当前环境的状态
+    ctx.save();
+
+    // 清空画布
+    ctx.clearRect(0, 0, width, height);
+
+    // 画背景色
+    ctx.beginPath();
+    if (current > 0) {
+      ctx.arc(x, y, r1, startAngle, endAngle, true);
+      ctx.arc(x, y, r2, endAngle, startAngle, false);
+    } else {
+      ctx.arc(x, y, r1, 0, Math.PI * 2, true);
+      ctx.arc(x, y, r2, Math.PI * 2, 0, false);
+    }
+
+    ctx.closePath();
+    ctx.fillStyle = bgColor;
+    ctx.fill();
+
+    // 画前景颜色
+    ctx.beginPath();
+    ctx.arc(x, y, r1, startAngle, endAngle, false);
+    ctx.arc(x, y, r2, endAngle, startAngle, true);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    // ctx.fillStyle = textColor;
+    // ctx.font = '' + fontSize + 'px arial';
+    // ctx.textBaseline = 'middle';
+    // ctx.textAlign = 'center';
+    // ctx.fillText('' + current.toFixed(options.toFixed) + '%', x, y);
+
+    // 返回之前保存过的路径状态和属性
+    ctx.restore();
+  }
+}
+
+var progressCircle = new ProgressCircle({
+  canvas: 'progress'
+})
+
+var requestAnimationFrame = (function () {
+  return window.requestAnimationFrame ||
+    function (cb) {
+        return window.setTimeout(cb, 1000 / 60);
+    };
+})();
+
+var cancelAnimationFrame = (function () {
+  return window.cancelAnimationFrame ||
+    window.clearTimeout;
+})();
+
+var music = document.getElementById('music')
+music.addEventListener('durationchange', function(e) {
+  console.log('durationchange')
+},false)
+
+music.addEventListener('play', function(e) {
+  console.log('play')
+},false)
+
+music.addEventListener('pause', function(e) {
+  console.log('pause')
+},false)
+
+music.addEventListener('playing', function(e) {
+  console.log('playing')
+},false)
+
+music.addEventListener('progress', function(e) {
+  console.log('progress')
+},false)
+
+music.addEventListener('ratechange', function(e) {
+  console.log('ratechange')
+},false)
+
+music.addEventListener('timeupdate', function(e) {
+  // console.log('timeupdate')
+  progressCircle.updateProgress(music.currentTime / music.duration)
+},false)
+
+function readPlay() {
+
+}
+
+// 控制音乐
+setTimeout(function() {
+  music.play();
+}, 1000)
+
+
+// var clientWidth = document.documentElement.clientWidth
+// var clientHeight = document.documentElement.clientHeight
+// var canvas = document.createElement('canvas')
+// document.body.appendChild(canvas)
+// canvas.width = clientWidth
+// canvas.height = clientHeight
+// var ctx = canvas.getContext('2d')
+
+// var startAngle = -Math.PI / 2; // 起始角为圆的正上方
+// var endAngle = startAngle + Math.PI * 2 * 70 / 100;  // 一圈是 2 PI
+
+// ctx.beginPath();
+// ctx.arc(100, 75, 50, startAngle, endAngle, false); // 顺时针画圆
+// // ctx.closePath();
+// // ctx.fill();
+// // ctx.beginPath();
+// ctx.arc(100, 75, 20, endAngle, startAngle, true);
+// ctx.closePath();
+
+// ctx.fillStyle = 'gold'
+// ctx.lineWidth = 3;
+// ctx.fill();
+// ctx.stroke();
+</script>
+</body>
+</html>
